@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/repositories/repositories.dart';
 import 'package:flutter_instagram/screens/signup/cubit/signup_cubit.dart';
+import 'package:flutter_instagram/widgets/error_dialog.dart';
 
 class SignupScreen extends StatelessWidget {
   static const String routeName = '/signup';
@@ -29,11 +30,11 @@ class SignupScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.status == SignupStatus.error) {
               showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: Text('Error'),
-                        content: Text(state.failure.message),
-                      ));
+                context: context,
+                builder: (context) => ErrorDialog(
+                  content: state.failure.message,
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -68,7 +69,7 @@ class SignupScreen extends StatelessWidget {
                                   .read<SignupCubit>()
                                   .usernameChanged(value),
                               validator: (value) => value.trim().isEmpty
-                                  ? 'Please enter a valid email.'
+                                  ? 'Please enter a valid username.'
                                   : null,
                             ),
                             const SizedBox(height: 16.0),
